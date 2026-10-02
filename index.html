@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calamares Arraial do Cabo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Outfit:wght@400;500;600&display=swap">
+<style>
+/* Layout: single mobile column — tide-line hero, menu block (3 languages), then a stack of action rows. Built for a phone held near an NFC tag. */
+:root{
+  --bg:#f3f8f8;          /* white sand washed in sea-light */
+  --surface:#ffffff;
+  --ink:#0b2a3a;         /* deep water */
+  --muted:#557282;
+  --line:#d5e4e7;
+  --sea:#0a8f95;         /* Arraial turquoise */
+  --sea-soft:#dff1f1;
+  --hero-a:#0b3b52; --hero-b:#0a8f95; --hero-fg:#f4fbfb;
+  --f-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --f-body:"Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#071a24; --surface:#0d2633; --ink:#e6f3f4; --muted:#8fb0bb; --line:#1c3b4a;
+  --sea:#3cc6c9; --sea-soft:#10333d; --hero-a:#05202e; --hero-b:#0a6f78; --hero-fg:#f4fbfb; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#071a24; --surface:#0d2633; --ink:#e6f3f4; --muted:#8fb0bb; --line:#1c3b4a;
+  --sea:#3cc6c9; --sea-soft:#10333d; --hero-a:#05202e; --hero-b:#0a6f78; --hero-fg:#f4fbfb; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:460px;margin:0 auto;padding-inline:16px;padding-block:16px 40px;display:flex;flex-direction:column;gap:22px}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;border-radius:22px;color:var(--hero-fg);
+  background:linear-gradient(160deg,var(--hero-a) 0%,var(--hero-b) 100%);padding:22px 22px 70px}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.coords{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;font-variant-numeric:tabular-nums}
+.lang{display:flex;gap:2px;background:rgba(255,255,255,.14);border-radius:999px;padding:3px}
+.lang button{all:unset;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;padding:5px 10px;border-radius:999px;color:var(--hero-fg);opacity:.75}
+.lang button[aria-pressed="true"]{background:var(--hero-fg);color:var(--hero-a);opacity:1}
+.lang button:focus-visible{outline:2px solid var(--hero-fg);outline-offset:2px}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,12vw,3.4rem);line-height:1;margin:34px 0 10px;letter-spacing:-.01em}
+.hero p{margin:0;font-size:15px;opacity:.9;max-width:30ch;text-wrap:balance}
+.waves{position:absolute;left:0;right:0;bottom:0;width:100%;height:56px;display:block}
+
+/* Section label */
+.label{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 4px 10px}
+
+/* Menu */
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.menu-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.menu-icon{flex:none;width:44px;height:44px;border-radius:12px;background:var(--sea-soft);color:var(--sea);display:grid;place-items:center}
+.menu-head h2{font-family:var(--f-display);font-weight:400;font-size:1.45rem;margin:0;line-height:1.1}
+.menu-head span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.menu-langs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.menu-langs a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 6px;border-radius:12px;
+  border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s}
+.menu-langs a b{font-size:15px;font-weight:600;letter-spacing:.08em}
+.menu-langs a small{font-size:12px;color:var(--muted)}
+.menu-langs a:hover,.menu-langs a:focus-visible{border-color:var(--sea);background:var(--sea-soft);outline:none}
+.menu-langs a.primary{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+.menu-langs a.primary small{color:var(--surface);opacity:.85}
+
+/* Actions */
+.actions{display:flex;flex-direction:column;gap:10px}
+.action{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.action:hover,.action:focus-visible{border-color:var(--sea);outline:none}
+.action:active{transform:scale(.985)}
+.action .ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--sea-soft);color:var(--sea)}
+.action .tx{flex:1;min-width:0}
+.action .tx b{display:block;font-weight:600;font-size:16px}
+.action .tx small{display:block;font-size:13.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.action .arr{flex:none;color:var(--muted)}
+svg{display:block}
+
+footer{text-align:center;font-size:13px;color:var(--muted);padding-top:4px}
+footer strong{font-family:var(--f-display);font-weight:400;color:var(--ink);font-size:15px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;
+  background:var(--ink);color:var(--bg);font-size:14px;padding:10px 16px;border-radius:999px;transition:.25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <span class="coords">22°58′S · 42°01′W</span>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button id="l-pt" data-l="pt" aria-pressed="true">PT</button>
+        <button id="l-en" data-l="en" aria-pressed="false">EN</button>
+        <button id="l-es" data-l="es" aria-pressed="false">ES</button>
+      </div>
+    </div>
+    <h1>Calamares</h1>
+    <p data-t="tagline">Frutos do mar em Arraial do Cabo, RJ</p>
+    <svg class="waves" viewBox="0 0 400 56" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 22 C50 8 100 36 150 22 S250 8 300 22 S370 34 400 20 V56 H0Z" fill="var(--bg)" opacity=".35"/>
+      <path d="M0 34 C60 20 110 48 170 34 S280 20 330 34 S380 42 400 32 V56 H0Z" fill="var(--bg)"/>
+    </svg>
+  </header>
+
+  <section class="menu" aria-labelledby="menu-title">
+    <div class="menu-head">
+      <div class="menu-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M8 8h6M8 12h6M8 16h4"/></svg></div>
+      <div><h2 id="menu-title" data-t="menu">Cardápio</h2><span data-t="menuSub">Escolha o idioma</span></div>
+    </div>
+    <div class="menu-langs">
+      <a id="m-pt" data-link="menu_pt" href="#"><b>PT</b><small>Português</small></a>
+      <a id="m-en" data-link="menu_en" href="#"><b>EN</b><small>English</small></a>
+      <a id="m-es" data-link="menu_es" href="#"><b>ES</b><small>Español</small></a>
+    </div>
+  </section>
+
+  <section>
+    <p class="label" data-t="more">Mais do Calamares</p>
+    <nav class="actions">
+      <a class="action" data-link="review" href="#">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1-4.5-4.2 6.1-.8z"/></svg></span>
+        <span class="tx"><b data-t="review">Avaliar o restaurante</b><small data-t="reviewSub">Conte como foi no TripAdvisor</small></span>
+        <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+      <a class="action" data-link="instagram" href="#">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></span>
+        <span class="tx"><b>Instagram</b><small data-t="igSub">Fotos, pratos e novidades</small></span>
+        <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+      <a class="action" data-link="whatsapp" href="#">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.4-1.9-.9-.8.8a4 4 0 0 1-2.2-2.2l.8-.8-.9-1.9z" fill="currentColor" stroke="none"/></svg></span>
+        <span class="tx"><b>WhatsApp</b><small data-t="waSub">Reservas e informações</small></span>
+        <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+      <a class="action" data-link="maps" href="#">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>
+        <span class="tx"><b data-t="maps">Como chegar</b><small data-t="mapsSub">Abrir rota no mapa</small></span>
+        <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+    </nav>
+  </section>
+
+  <footer><strong>Calamares</strong><br><span data-t="foot">Arraial do Cabo · Rio de Janeiro</span></footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   LINKS — edite só aqui. Deixe "" para mostrar "link em breve".
+   ============================================================ */
+const LINKS = {
+  menu_pt:   "",   // cardápio em português (PDF ou página)
+  menu_en:   "",   // cardápio em inglês
+  menu_es:   "",   // cardápio em espanhol
+  review:    "",   // link de avaliação do TripAdvisor
+  instagram: "",   // ex.: https://instagram.com/seuperfil
+  whatsapp:  "",   // ex.: https://wa.me/5522999999999?text=Olá!
+  maps:      "https://www.google.com/maps/search/?api=1&query=Calamares+Arraial+do+Cabo+RJ"
+};
+
+const T = {
+  pt:{tagline:"Frutos do mar em Arraial do Cabo, RJ",menu:"Cardápio",menuSub:"Escolha o idioma",more:"Mais do Calamares",
+      review:"Avaliar o restaurante",reviewSub:"Conte como foi no TripAdvisor",igSub:"Fotos, pratos e novidades",
+      waSub:"Reservas e informações",maps:"Como chegar",mapsSub:"Abrir rota no mapa",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link disponível em breve"},
+  en:{tagline:"Seafood in Arraial do Cabo, Brazil",menu:"Menu",menuSub:"Choose your language",more:"More from Calamares",
+      review:"Review us",reviewSub:"Share your visit on TripAdvisor",igSub:"Photos, dishes and news",
+      waSub:"Bookings and information",maps:"Directions",mapsSub:"Open route in maps",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link coming soon"},
+  es:{tagline:"Mariscos en Arraial do Cabo, Brasil",menu:"Menú",menuSub:"Elige el idioma",more:"Más de Calamares",
+      review:"Evalúa el restaurante",reviewSub:"Cuéntanos en TripAdvisor",igSub:"Fotos, platos y novedades",
+      waSub:"Reservas e información",maps:"Cómo llegar",mapsSub:"Abrir ruta en el mapa",foot:"Arraial do Cabo · Río de Janeiro",soon:"Enlace disponible pronto"}
+};
+
+let lang = "pt";
+const toast = document.getElementById("toast");
+let tt;
+function showToast(msg){toast.textContent=msg;toast.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("on"),2200);}
+
+function setLang(l){
+  lang = T[l] ? l : "pt";
+  document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+  document.querySelectorAll("[data-t]").forEach(el=>{const v=T[lang][el.dataset.t]; if(v) el.textContent=v;});
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.l===lang)));
+  document.querySelectorAll(".menu-langs a").forEach(a=>a.classList.toggle("primary", a.dataset.link==="menu_"+lang));
+  try{localStorage.setItem("calamares-lang",lang);}catch(e){}
+}
+
+document.querySelectorAll("[data-link]").forEach(a=>{
+  const url = LINKS[a.dataset.link];
+  if(url){a.href=url;a.target="_blank";a.rel="noopener";}
+  else a.addEventListener("click",e=>{e.preventDefault();showToast(T[lang].soon);});
+});
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.l)));
+
+/* Idioma inicial: escolha salva > idioma do celular > português */
+let start = "pt";
+try{ start = localStorage.getItem("calamares-lang") || ""; }catch(e){ start=""; }
+if(!start){ const n=(navigator.language||"pt").slice(0,2).toLowerCase(); start = T[n] ? n : "pt"; }
+setLang(start);
+</script>
+</body>
+</html>
