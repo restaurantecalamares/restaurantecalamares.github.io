@@ -152,9 +152,9 @@ footer strong{font-family:var(--f-display);font-weight:400;color:var(--ink);font
    LINKS — edite só aqui. Deixe "" para mostrar "link em breve".
    ============================================================ */
 const LINKS = {
-  menu_pt:   "",   // cardápio em português (PDF ou página)
-  menu_en:   "",   // cardápio em inglês
-  menu_es:   "",   // cardápio em espanhol
+  menu_pt:   "cardapio.html?lang=pt",   // cardápio em português (PDF ou página)
+  menu_en:   "cardapio.html?lang=en",   // cardápio em inglês
+  menu_es:   "cardapio.html?lang=es",   // cardápio em espanhol
   review:    "",   // link de avaliação do TripAdvisor
   instagram: "",   // ex.: https://instagram.com/seuperfil
   whatsapp:  "",   // ex.: https://wa.me/5522999999999?text=Olá!
@@ -189,7 +189,7 @@ function setLang(l){
 
 document.querySelectorAll("[data-link]").forEach(a=>{
   const url = LINKS[a.dataset.link];
-  if(url){a.href=url;a.target="_blank";a.rel="noopener";}
+  if(url){a.href=url;if(/^https?:/.test(url)){a.target="_blank";a.rel="noopener";}}
   else a.addEventListener("click",e=>{e.preventDefault();showToast(T[lang].soon);});
 });
 document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.l)));
