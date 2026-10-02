@@ -65,7 +65,8 @@ function show(tipo){
   document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === tipo)));
   let h = "";
   for (let i = 1; i <= QTD[tipo]; i++){
-    const f = `fotos/${tipo}-${String(i).padStart(2,"0")}.jpg`;
+    const pre = (tipo === "pratos" && lang !== "pt") ? `pratos-${lang}` : tipo;
+    const f = `fotos/${pre}-${String(i).padStart(2,"0")}.jpg`;
     h += `<img src="${f}" alt="" ${i > 2 ? 'loading="lazy"' : ''}>`;
   }
   h += `<a class="cta" href="cardapio.html?lang=${lang}${tipo === "drinks" ? "#drinks" : ""}">${T[lang].menu}</a>`;
