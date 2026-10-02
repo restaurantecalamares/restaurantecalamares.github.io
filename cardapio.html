@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cardápio · Calamares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Outfit:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f8f8; --surface:#ffffff; --ink:#0b2a3a; --muted:#557282; --line:#d5e4e7;
+  --sea:#0a8f95; --sea-soft:#dff1f1; --hero-a:#0b3b52; --hero-b:#0a8f95; --hero-fg:#f4fbfb;
+  --f-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --f-body:"Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#071a24; --surface:#0d2633; --ink:#e6f3f4; --muted:#8fb0bb; --line:#1c3b4a;
+  --sea:#3cc6c9; --sea-soft:#10333d; --hero-a:#05202e; --hero-b:#0a6f78; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.top{position:sticky;top:0;z-index:10;background:linear-gradient(160deg,var(--hero-a),var(--hero-b));color:var(--hero-fg);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 0}
+.bar{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:14px;opacity:.9}
+.brand{font-family:var(--f-display);font-size:1.5rem;line-height:1}
+.lang{display:flex;gap:2px;background:rgba(255,255,255,.14);border-radius:999px;padding:3px}
+.lang button{all:unset;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;padding:5px 10px;border-radius:999px;color:var(--hero-fg);opacity:.75}
+.lang button[aria-pressed="true"]{background:var(--hero-fg);color:var(--hero-a);opacity:1}
+.lang button:focus-visible{outline:2px solid var(--hero-fg);outline-offset:2px}
+.chips{max-width:720px;margin:10px auto 0;display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips a{flex:none;text-decoration:none;font-size:13.5px;font-weight:500;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);white-space:nowrap}
+.chips a.on{background:var(--hero-fg);color:var(--hero-a)}
+main{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:8px 48px}
+section{padding-top:22px}
+h2{font-family:var(--f-display);font-weight:400;font-size:1.75rem;margin:0;line-height:1.1}
+.sub{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sea);margin-top:4px}
+h3{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.item{display:flex;gap:14px;padding:14px 16px;align-items:flex-start}
+.item+.item{border-top:1px solid var(--line)}
+.txt{flex:1;min-width:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.name{font-weight:600;font-size:16px}
+.price{flex:none;font-weight:600;font-size:15px;color:var(--sea);font-variant-numeric:tabular-nums;white-space:nowrap}
+.desc{font-size:14px;color:var(--muted);margin-top:3px}
+.ph{flex:none;width:84px;height:84px;border-radius:12px;overflow:hidden;background:var(--sea-soft);border:0;padding:0;cursor:zoom-in}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:28px}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(4,16,22,.88);display:grid;place-items:center;padding:24px}
+.lb img{max-width:100%;max-height:78vh;border-radius:14px}
+.lb p{color:#f4fbfb;text-align:center;margin:12px 0 0;font-weight:500}
+.lb button{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;all:unset;cursor:pointer;color:#f4fbfb;font-size:28px;line-height:1;padding:8px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="back" href="./" id="back"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg><span class="brand">Calamares</span></a>
+    <div class="lang" role="group" aria-label="Idioma">
+      <button id="l-pt" data-l="pt" aria-pressed="true">PT</button>
+      <button id="l-en" data-l="en" aria-pressed="false">EN</button>
+      <button id="l-es" data-l="es" aria-pressed="false">ES</button>
+    </div>
+  </div>
+  <nav class="chips" id="chips"></nav>
+</header>
+<main id="menu"></main>
+<div class="lb" id="lb" hidden><button id="lbx" aria-label="Fechar">✕</button><figure style="margin:0"><img id="lbi" alt=""><p id="lbt"></p></figure></div>
+
+<script>
+/* Cada item: [foto, preço, nome PT, descrição PT, nome EN, descrição EN, nome ES, descrição ES]
+   Preço: número (ex. 105.9) ou "?" para "Consultar". Foto: nome do arquivo em img/ sem .jpg, ou "" */
+const MENU = [
+{id:"entradas", t:["Entradas","Appetizers","Aperitivos"], groups:[{items:[
+ ["casquinha-siri",27.9,"Casquinha de Siri Gratinada","Com queijo parmesão.","Gratinated Crab Shell","With parmesan cheese.","Casquinha de Cangrejo Gratinada","Con queso parmesano."],
+ ["caldo-frutos-mar",37.9,"Caldo de Frutos do Mar","Lula, camarão e mexilhão.","Seafood Broth","Squid, shrimp and mussels.","Caldo de Mariscos","Calamares, camarones y mejillones."],
+ ["vinagrete-polvo",52.9,"Vinagrete de Polvo","Acompanha pão artesanal.","Octopus Vinaigrette","Served with homemade bread.","Vinagreta de Pulpo","Servido con pan artesanal."]
+]}]},
+{id:"para2", t:["Pratos para 2","Dishes for 2","Platos para 2"], groups:[
+ {t:["Pescados","Fish","Pescados"], items:[
+ ["postas-moda-casa",105.9,"Postas à Moda da Casa","Posta frita de peixe do dia, acompanha arroz, fritas, pirão e farofa de banana.","House-Style Fish Steak","Fried steak of the fish of the day, served with rice, fries, pirão and banana farofa.","Pescado a la Casa","Pescado frito del día, servido con arroz, papas fritas, pirão y farofa de banana."],
+ ["postas-molho-mar",129.9,"Postas ao Molho do Mar","Posta frita de peixe do dia com molho de frutos do mar (lula, camarão e mexilhão), acompanha arroz, fritas e farofa de banana.","Fish Steak in Seafood Sauce","Fried steak of the fish of the day with seafood sauce of squid, shrimp and mussels, served with rice, fries and banana farofa.","Pescado con Salsa del Mar","Pescado frito del día con salsa de mariscos (calamares, camarones y mejillones), servido con arroz, papas fritas y farofa de banana."],
+ ["postas-escabeche",139.9,"Postas à Escabeche","Posta frita de peixe do dia ao molho escabeche, acompanha arroz, fritas, pirão e farofa de coco.","Fish Steak Escabeche","Fried steak of the fish of the day in escabeche sauce, served with rice, fries, pirão and coconut farofa.","Pescado a la Escabeche","Pescado frito del día en salsa escabeche, servido con arroz, papas fritas, pirão y farofa de coco."],
+ ["file-moda-casa",118.9,"Filé à Moda da Casa","Filé frito ou grelhado de peixe do dia, acompanha arroz, fritas e pirão.","House-Style Fillet","Fried or grilled fillet of the fish of the day, served with rice, fries and pirão.","Filete de Pescado a la Casa","Filete de pescado del día frito o a la plancha, servido con arroz, papas fritas y pirão."],
+ ["file-molho",137.9,"Filé ao Molho","Filé frito ou grelhado de peixe do dia, acompanha molho de camarão ou frutos do mar, arroz e fritas.","Fish Fillet in Sauce","Fried or grilled fillet of the fish of the day with shrimp or seafood sauce, served with rice and fries.","Filete a la Salsa","Filete de pescado del día frito o a la plancha, con salsa de camarones o de mariscos, arroz y papas fritas."],
+ ["moqueca-peixe",114.9,"Moqueca de Peixe","Posta cozida de peixe do dia, acompanha arroz, pirão e farofa de banana.","Brazilian Fish Moqueca","Fish of the day simmered in coconut milk and tomato sauce with vegetables, served with rice, pirão and banana farofa.","Moqueca de Pescado","Pescado del día cocido, servido con arroz, pirão y farofa de banana."]
+ ]},
+ {t:["Frutos do Mar","Seafood","Frutos del Mar"], items:[
+ ["caldeirada",138.9,"Caldeirada","Posta de peixe do dia cozida com camarão, lula e mexilhão, acompanha arroz, pirão e farofa de banana.","Seafood Stew","Steak of the fish of the day cooked with shrimp, squid and mussels, served with rice, pirão and banana farofa.","Caldereta del Mar","Pescado del día cocido con camarones, calamares y mejillones, servido con arroz, pirão y farofa de banana."],
+ ["caldeirada-cabista",188.9,"Caldeirada Cabista","Posta de peixe do dia cozida com camarão, lula do Arraial, mexilhão e polvo, acompanha arroz de açafrão, fritas, pirão e farofa de coco.","Cabista Seafood Stew","Steak of the fish of the day cooked with shrimp, local Arraial squid, mussels and octopus, served with saffron rice, fries, pirão and coconut farofa.","Caldereta Cabista","Pescado del día cocido con camarones, calamares de Arraial, mejillones y pulpo, servido con arroz de azafrán, papas fritas, pirão y farofa de coco."],
+ ["gratinado-lula",138.9,"Gratinado de Lula","Lula do Arraial salteada em molho branco da casa e catupiry, acompanha arroz de brócolis e batata dorê.","Creamy Gratinated Squid","Local Arraial squid in creamy white sauce with catupiry and parmesan, served with broccoli rice and golden potatoes.","Gratín de Calamar","Calamar de Arraial salteado en salsa blanca de la casa con queso crema y parmesano, servido con arroz de brócoli y papas doradas."],
+ ["arroz-do-mar",179.9,"Arroz do Mar","Arroz branco refogado com lula do Arraial, camarão, mexilhão e polvo, acompanha fritas.","Rice of the Sea","White rice sautéed with local Arraial squid, shrimp, mussels and octopus, served with fries.","Arroz del Mar","Arroz blanco salteado con calamar de Arraial, camarones, mejillones y pulpo, servido con papas fritas."],
+ ["arroz-calamares",145.9,"Arroz à Calamares","O famoso arroz cremoso de lula do Calamares: arroz branco refogado no leite de coco com lula do Arraial, parmesão e especiarias.","House-Style Squid Rice","Our famous creamy squid rice: white rice sautéed in coconut milk with local Arraial squid, parmesan and spices.","Arroz a la Calamares","Nuestro famoso arroz cremoso de calamar: arroz blanco salteado en leche de coco con calamar de Arraial, parmesano y especias."],
+ ["salmao-grelhado",184.9,"Salmão Grelhado","Acompanha arroz de brócolis, batata dorê e geleia de pimenta.","Grilled Salmon","Served with broccoli rice, golden potatoes and pepper jelly.","Salmón a la Plancha","Servido con arroz de brócoli, papas doradas y mermelada de ají."]
+ ]},
+ {t:["Camarão","Shrimp","Camarones"], items:[
+ ["gratinado-camarao",132.9,"Gratinado de Camarão","Camarão salteado em molho branco da casa e catupiry, acompanha arroz de brócolis e batata dorê.","Creamy Gratinated Shrimp","Shrimp in creamy white sauce with catupiry and parmesan, served with broccoli rice and golden potatoes.","Gratín de Camarones","Camarones salteados en salsa blanca de la casa con queso crema y parmesano, servido con arroz de brócoli y papas doradas."],
+ ["bobo-camarao",124.9,"Bobó de Camarão","Camarão grelhado e refogado em massa artesanal de aipim, leite de coco e coentro, acompanha arroz, fritas e farofa de coco.","Brazilian Shrimp Bobó","Grilled shrimp in our homemade creamy cassava and coconut milk, finished with cilantro. Served with rice, fries and coconut farofa.","Bobó de Camarones","Camarones salteados en masa artesanal de yuca, leche de coco y cilantro, servido con arroz, papas fritas y farofa de coco."],
+ ["camarao-moranga",144.9,"Camarão na Moranga","Camarão refogado em molho especial de abóbora moranga, catupiry, leite de coco, parmesão e muito tempero, acompanha fritas e arroz.","Shrimp & Pumpkin","Shrimp sautéed in a creamy pumpkin sauce with catupiry, coconut milk and parmesan. Served with rice and fries.","Camarones en Calabaza","Camarones salteados en una salsa especial de calabaza con queso crema, leche de coco y parmesano, servido con papas fritas y arroz."],
+ ["camarao-grega",144.9,"Camarão à Grega","Camarão empanado coberto por queijo muçarela derretido, acompanha arroz à grega e fritas.","Shrimp à la Grecque","Breaded shrimp topped with melted mozzarella, served with Greek-style rice and fries.","Camarones a la Griega","Camarones empanados cubiertos con mozzarella derretida, servido con arroz a la griega y papas fritas."],
+ ["arroz-cremoso",124.9,"Arroz Cremoso","Arroz branco refogado com camarões, leite de coco e parmesão, acompanha fritas.","Creamy Shrimp Rice","White rice sautéed with shrimp, coconut milk and parmesan, served with fries.","Arroz Cremoso","Arroz blanco salteado con camarones, leche de coco y parmesano, servido con papas fritas."],
+ ["",134.9,"Strogonoff de Camarão","Tradicional strogonoff brasileiro com creme de leite, camarões e muito tempero, acompanha arroz e fritas.","Shrimp Stroganoff","Traditional Brazilian stroganoff with shrimp and cream, served with rice and fries.","Estrogonoff de Camarones","Estrogonoff a la brasileña con crema de leche y camarones, servido con arroz y papas fritas."],
+ ["moqueca-camarao",138.9,"Moqueca de Camarão","Camarão cozido em caldo da casa, finalizado com coentro e limão, acompanha arroz, pirão e farofa de coco.","Shrimp Moqueca","Shrimp cooked in our flavorful house broth, finished with cilantro and lime. Served with rice, pirão and coconut farofa.","Moqueca de Camarones","Camarones cocidos en nuestro caldo de la casa, con cilantro y limón, servido con arroz, pirão y farofa de coco."]
+ ]},
+ {t:["Carnes e Frango","Meat & Chicken","Carnes y Pollo"], items:[
+ ["mignon-moda-casa",159.9,"Mignon à Moda da Casa","Medalhão de mignon ao molho madeira com bacon e cogumelos, acompanha arroz, fritas, farofa e vinagrete.","House-Style Mignon","Beef mignon medallions in madeira sauce with bacon and mushrooms, served with rice, fries, farofa and vinaigrette.","Mignon a la Casa","Medallones de mignon en salsa madeira con bacon y champiñones, servido con arroz, papas fritas, farofa y vinagreta."],
+ ["mignon-piamontese",159.9,"Mignon à Piamontese","Medalhão de mignon ao molho madeira com bacon e cogumelos, acompanha arroz à piamontese e molho gorgonzola.","Piedmont-Style Mignon","Beef mignon medallions in madeira sauce with bacon and mushrooms, served with Piedmont-style rice and gorgonzola sauce.","Mignon a la Piamontesa","Medallones de mignon en salsa madeira con bacon y champiñones, servido con arroz a la piamontesa y salsa de gorgonzola."],
+ ["strogonoff-mignon",138.9,"Strogonoff de Mignon","Tradicional strogonoff brasileiro com creme de leite, lascas de mignon e muito tempero, acompanha arroz e fritas.","Mignon Stroganoff","Traditional Brazilian stroganoff with mignon strips and cream, served with rice and fries.","Estrogonoff de Mignon","Estrogonoff a la brasileña con crema de leche y tiras de mignon, servido con arroz y papas fritas."],
+ ["picanha-chapa",178.9,"Picanha na Chapa","Picanha servida na chapa, acompanha arroz, fritas, farofa e vinagrete.","Picanha on the Griddle","Picanha served on the griddle with rice, fries, farofa and vinaigrette.","Picanha a la Plancha","Picanha servida a la plancha con arroz, papas fritas, farofa y vinagreta."],
+ ["picanha-chapa",209.9,"Picanha Argentina","500 g da legítima picanha argentina servida na chapa com arroz, fritas, vinagrete e farofa.","Argentine Picanha","500 g of genuine Argentine picanha served on the griddle with rice, fries, vinaigrette and farofa.","Picanha Argentina","500 g de auténtica picanha argentina servida a la plancha con arroz, papas fritas, vinagreta y farofa."],
+ ["frango-grelhado",98.9,"Frango Grelhado","Filé de frango grelhado, acompanha arroz, feijão, farofa e fritas.","Grilled Chicken Fillet","Grilled chicken fillet, served with rice, beans, fries and farofa.","Filete de Pollo a la Plancha","Filete de pollo a la plancha, servido con arroz, frijoles, farofa y papas fritas."]
+ ]}
+]},
+{id:"individuais", t:["Pratos individuais","Individual dishes","Platos individuales"], groups:[{items:[
+ ["",74.9,"Individual de Salmão","Acompanha arroz de brócolis, fritas e molho do dia.","Individual Salmon","Served with broccoli rice, fries and sauce of the day.","Individual de Salmón","Servido con arroz de brócoli, papas fritas y salsa del día."],
+ ["",52.9,"Escondidinho de Camarão","Camarões grelhados envoltos em massa artesanal de aipim, com catupiry e queijo parmesão.","Shrimp Escondidinho","Grilled shrimp wrapped in homemade cassava mash with catupiry and parmesan.","Escondidinho de Camarones","Camarones a la plancha en masa artesanal de yuca, con queso crema y parmesano."],
+ ["",52.9,"Nhoque de Camarão","Massa artesanal de aipim.","Shrimp Gnocchi","Homemade cassava dough.","Ñoquis de Camarones","Masa artesanal de yuca."],
+ ["",58.9,"Nhoque al Mare","Massa artesanal de aipim refogada em molho bechamel com páprica defumada, lulas do Arraial e camarões grelhados.","Gnocchi al Mare","Homemade cassava gnocchi with grilled shrimp and local Arraial squid, in a bechamel sauce with smoked paprika.","Ñoqui al Mare","Ñoquis artesanales de yuca con calamar de Arraial y camarones, en salsa bechamel con pimentón ahumado."],
+ ["",56.9,"Nhoque Cremoso de Mignon","Massa artesanal de aipim refogada em molho branco de queijo gorgonzola, com tiras de mignon grelhadas.","Creamy Mignon Gnocchi","Homemade cassava gnocchi with grilled mignon strips in a white gorgonzola sauce.","Ñoqui Cremoso de Mignon","Ñoquis artesanales de yuca con tiras de mignon a la plancha en salsa blanca de gorgonzola."]
+]}]},
+{id:"petiscos", t:["Petiscos","Snacks to share","Para compartir"], groups:[
+ {t:["Do Mar","From the Sea","Del Mar"], items:[
+ ["kibe-peixe",44.9,"Kibe de Peixe","O queridinho do Calamares: massa de kibe artesanal recheada com peixe da estação, acompanha molho cítrico de ervas.","Fish Kibbeh","Calamares' favorite: homemade kibbeh dough filled with seasonal fish, served with citrus herb sauce.","Kibbeh de Pescado","El consentido de Calamares: masa de kibbeh artesanal rellena de pescado de temporada, servido con salsa cítrica de hierbas."],
+ ["isca-peixe",77.9,"Iscas de Peixe","Tiras de peixe do dia empanadas, acompanha molho tártaro.","Fish Strips","Breaded fish of the day, served with tartar sauce.","Tiras de Pescado","Tiras de pescado del día empanadas, servidas con salsa tártara."],
+ ["",89.9,"Fish and Chips","Postas de peixe frito com batata frita.","Fish and Chips","Fried fish served with french fries.","Fish and Chips","Pescado frito con papas fritas."],
+ ["camarao-azeite",85.9,"Camarão ao Azeite","Camarão grelhado no azeite e alho, com casca e sem cabeça.","Shrimp in Olive Oil","Shrimp sautéed in olive oil and garlic, shell-on and headless.","Camarones al Olivo","Camarones a la plancha en aceite de oliva y ajo, con cáscara y sin cabeza."],
+ ["camarao-empanado",87.9,"Camarão Empanado","Camarão empanado em leve farinha de trigo, acompanha chutney de pimenta.","Breaded Shrimp","Shrimp lightly breaded, served with chili pepper chutney.","Camarones Empanados","Camarones en un ligero rebozado de trigo, servido con chutney de ají."],
+ ["lula-dore",83.9,"Lula à Dorê","Lula empanada, acompanha molho rosê.","Breaded Squid","Breaded squid, served with rosé sauce.","Calamar Dorado","Calamares empanados, servidos con salsa rosé."],
+ ["lula-calamares",87.9,"Lula à Calamares","Lula do Arraial grelhada com molho shoyu, acompanha pão caseiro.","House-Style Squid","Local Arraial squid grilled with soy sauce, served with homemade bread.","Calamar a la Casa","Calamares de Arraial a la plancha con shoyu, servido con pan casero."]
+ ]},
+ {t:["Da Terra","From the Land","De la Tierra"], items:[
+ ["bolinha-queijo",44.9,"Bolinha de Queijo","Massa de aipim da casa recheada com muçarela, acompanha molho rosê. 10 unidades.","Cheese Balls","Homemade cassava dough filled with mozzarella, served with rosé sauce. 10 pieces.","Bolitas de Queso","Masa de yuca de la casa rellena de mozzarella, servido con salsa rosé. 10 unidades."],
+ ["lascas-mignon",87.9,"Lascas de Mignon","Acompanha fritas e molho gorgonzola.","Mignon Strips","Served with french fries and gorgonzola sauce.","Lascas de Mignon","Servido con papas fritas y salsa de gorgonzola."],
+ ["lascas-picanha",86.9,"Lascas de Picanha","Tiras de picanha grelhada, acompanha fritas, farofa e vinagrete.","Picanha Strips","Grilled picanha strips served with french fries, farofa and vinaigrette.","Lascas de Picanha","Tiras de picanha a la plancha, servido con papas fritas, farofa y vinagreta."],
+ ["tiras-alcatra",83.9,"Tiras de Alcatra c/ Fritas","Tiras de alcatra grelhada, acompanha fritas, farofa e vinagrete.","Beef Strips with Fries","Grilled beef strips served with french fries, farofa and vinaigrette.","Tiras de Alcatra con Papas","Tiras de alcatra a la plancha, servido con papas fritas, farofa y vinagreta."],
+ ["frango-aperitivo",63.9,"Frango Aperitivo","Tiras de frango grelhado, acompanha fritas e molho rosê.","Chicken Strips","Grilled chicken strips served with fries and rosé sauce.","Tiras de Pollo","Tiras de pollo a la plancha, servido con papas fritas y salsa rosé."],
+ ["fritas-especial",44.9,"Batata Frita Especial","Batata frita com molho cheddar e bacon triturado.","Special Fries","French fries with cheddar sauce and bacon.","Papas Fritas Especiales","Papas fritas con salsa cheddar y bacon."],
+ ["",39.9,"Batata Frita","Acompanha molho rosê.","French Fries","Served with rosé sauce.","Papas Fritas","Servido con salsa rosé."]
+ ]}
+]},
+{id:"vegetarianos", t:["Vegetarianos","Vegetarian","Vegetarianos"], groups:[{items:[
+ ["",89.9,"Moqueca de Banana","Ensopado de banana-da-terra com muito tempero, acompanha arroz de brócolis e farofa de banana.","Banana Moqueca","Plantain stew served with broccoli rice and banana farofa.","Moqueca de Banana","Guiso de plátano, servido con arroz de brócoli y farofa de banana."],
+ ["",95.9,"Strogonoff de Palmito","Refogado de palmito numa releitura do tradicional strogonoff brasileiro, acompanha arroz branco e fritas.","Palm Heart Stroganoff","Sautéed palm hearts, a Brazilian twist on traditional stroganoff, served with white rice and fries.","Estrogonoff de Palmito","Palmito salteado, una relectura del tradicional estrogonoff brasileño, servido con arroz blanco y papas fritas."],
+ ["",48.9,"Escondidinho de Brócolis","Brócolis grelhado envolto em massa artesanal de aipim, finalizado com queijo parmesão.","Broccoli Escondidinho","Grilled broccoli wrapped in homemade cassava dough, finished with parmesan.","Escondidinho de Brócoli","Brócoli a la plancha envuelto en masa artesanal de yuca, con parmesano."],
+ ["",52.9,"Nhoque de Palmito","Nhoque artesanal de aipim com molho branco da casa e palmitos grelhados, finalizado com parmesão e catupiry.","Palm Heart Gnocchi","Cassava gnocchi with our house white sauce and grilled palm hearts, finished with parmesan and catupiry.","Ñoqui de Palmito","Ñoquis de yuca con salsa blanca de la casa y palmitos a la plancha, con parmesano y queso crema."]
+]}]},
+{id:"acompanhamentos", t:["Acompanhamentos","Sides","Guarniciones"], groups:[{items:[
+ ["",9,"Farofa","","Farofa","","Farofa",""],
+ ["",15.9,"Arroz, Feijão ou Pirão","Cada.","Rice, Beans or Pirão","Each.","Arroz, Frijoles o Pirão","Cada uno."],
+ ["",35.9,"Molho de Camarão","","Shrimp Sauce","","Salsa de Camarones",""],
+ ["",24.9,"Molho Gorgonzola","","Gorgonzola Sauce","","Salsa de Gorgonzola",""]
+]}]},
+{id:"sobremesas", t:["Sobremesas","Desserts","Postres"], groups:[{items:[
+ ["",32.9,"Petit Gâteau","Bolinho de chocolate com sorvete de baunilha, acompanha farofa de biscoito.","Petit Gâteau","Warm chocolate cake with vanilla ice cream and cookie crumble.","Petit Gâteau","Bizcocho de chocolate con helado de vainilla y crumble de galleta."],
+ ["",32.9,"Brownie com Sorvete","Brownie de chocolate com sorvete de baunilha, acompanha farofa de biscoito.","Brownie with Ice Cream","Chocolate brownie with vanilla ice cream and cookie crumble.","Brownie con Helado","Brownie de chocolate con helado de vainilla y crumble de galleta."]
+]}]},
+{id:"drinks", t:["Drinks","Drinks","Drinks"], groups:[
+ {t:["Da Casa","House Specials","De la Casa"], items:[
+ ["tangerine-rum",34,"Tangerine Rum","Maracujá, xarope de tangerina, rum ouro e espuma de gengibre.","Tangerine Rum","Passion fruit, tangerine syrup, gold rum and ginger foam.","Tangerine Rum","Maracuyá, jarabe de mandarina, ron dorado y espuma de jengibre."],
+ ["maracujack",38,"Maracujack","Whisky Jack Daniel's, maracujá, água com gás ou Sprite.","Maracujack","Jack Daniel's whisky, passion fruit, sparkling water or Sprite.","Maracujack","Whisky Jack Daniel's, maracuyá, agua con gas o Sprite."],
+ ["dolce-havana",32,"Dolce Havana","Rum, aperol e morango.","Dolce Havana","Rum, aperol and strawberry.","Dolce Havana","Ron, aperol y fresa."],
+ ["rosameska",34,"Rosameska","Aperitivo, aperol, xarope de melancia e limão.","Rosameska","Aperitivo, aperol, watermelon syrup and lime.","Rosameska","Aperitivo, aperol, jarabe de sandía y limón."],
+ ["brasileirinha",32,"Brasileirinha","Limão com maracujá, vodka ou cachaça.","Brasileirinha","Lime with passion fruit, vodka or cachaça.","Brasileirinha","Limón con maracuyá, vodka o cachaça."],
+ ["passion",32,"Passion","Abacaxi, maracujá, rum e grenadine.","Passion","Pineapple, passion fruit, rum and grenadine.","Passion","Piña, maracuyá, ron y granadina."],
+ ["",36,"Tropical","Gim, maracujá, energético tropical e espuma de gengibre.","Tropical","Gin, passion fruit, tropical energy drink and ginger foam.","Tropical","Gin, maracuyá, energizante tropical y espuma de jengibre."],
+ ["cupido",36,"Cupido","Gim, morango, xarope de amora, tônica e espuma de gengibre.","Cupido","Gin, strawberry, blackberry syrup, tonic water and ginger foam.","Cupido","Gin, fresa, jarabe de mora, agua tónica y espuma de jengibre."],
+ ["",34,"Mojito Mares","Rum branco, hortelã, maracujá, limão, Sprite ou água com gás.","Mojito Mares","White rum, mint, passion fruit, lime, Sprite or sparkling water.","Mojito Mares","Ron blanco, menta, maracuyá, limón, Sprite o agua con gas."]
+ ]},
+ {t:["Tradicionais","Classics","Tradicionales"], items:[
+ ["moscow-mule",32,"Moscow Mule","Xarope artesanal de gengibre, limão, vodka e espuma da casa.","Moscow Mule","Homemade ginger syrup, lime, vodka and house ginger foam.","Moscow Mule","Jarabe artesanal de jengibre, limón, vodka y espuma de la casa."],
+ ["mojito",30,"Mojito","Rum branco, hortelã, limão, Sprite ou água com gás.","Mojito","White rum, mint, lime, Sprite or sparkling water.","Mojito","Ron blanco, menta, limón, Sprite o agua con gas."],
+ ["aperol-spritz",35,"Aperol Spritz","Aperol, espumante e água com gás.","Aperol Spritz","Aperol, sparkling wine and sparkling water.","Aperol Spritz","Aperol, vino espumante y agua con gas."],
+ ["sexy-on-the-beach",30,"Sexy on the Beach","Laranja, vodka, grenadine e licor de pêssego.","Sexy on the Beach","Orange juice, vodka, grenadine and peach liqueur.","Sexy on the Beach","Naranja, vodka, granadina y licor de durazno."],
+ ["",30,"Whisky Sour","Whisky, limão e xarope.","Whisky Sour","Whisky, lime and syrup.","Whisky Sour","Whisky, limón y jarabe."],
+ ["marguerita",36,"Marguerita","Limão, tequila e Cointreau.","Margarita","Lime, tequila and orange liqueur.","Margarita","Limón, tequila y Cointreau."]
+ ]},
+ {t:["Coquetéis","Cocktails","Cócteles"], items:[
+ ["",35,"Piña Colada","Abacaxi, rum, leite condensado e leite de coco.","Piña Colada","Pineapple, rum, condensed milk and coconut milk.","Piña Colada","Piña, ron, leche condensada y leche de coco."],
+ ["",35,"Espanhola","Abacaxi, vinho tinto e leite condensado.","Spanish","Pineapple, red wine and condensed milk.","Española","Piña, vino tinto y leche condensada."],
+ ["cachoeira",35,"Cachoeira","Leite de coco, vodka, leite condensado e coco ralado.","Cachoeira","Coconut milk, vodka, condensed milk and shredded coconut.","Cachoeira","Leche de coco, vodka, leche condensada y coco rallado."],
+ ["sensacao",35,"Sensação","Morango, leite condensado, vodka e marula.","Sensação","Strawberry, condensed milk, vodka and marula.","Sensação","Fresa, leche condensada, vodka y marula."],
+ ["",35,"Coquetel de Amarula","Amarula, leite condensado, vodka e marula.","Amarula Cocktail","Amarula, condensed milk, vodka and marula.","Cóctel de Amarula","Amarula, leche condensada, vodka y marula."]
+ ]},
+ {t:["Sem Erro","Can't Go Wrong","Nunca Falla"], items:[
+ ["caipirinha",20,"Caipirinha","","Caipirinha","","Caipiriña",""],
+ ["",26,"Caipirinha de Saquê","","Sake Caipirinha","","Caipiriña de Sake",""],
+ ["",26,"Caipirinha de Vodka","","Vodka Caipirinha","","Caipiriña de Vodka",""],
+ ["",36,"Caipirinha de Vodka Importada","","Imported Vodka Caipirinha","","Caipiriña de Vodka Importada",""],
+ ["",28,"Gin Tônica","","Gin & Tonic","","Gin Tonic",""],
+ ["",34,"Fernet com Coca","","Fernet & Coke","","Fernet con Coca",""]
+ ]},
+ {t:["Sem Álcool","Non-Alcoholic","Sin Alcohol"], items:[
+ ["soda-italiana",20,"Soda Italiana","Água com gás e xarope.","Italian Soda","Sparkling water and syrup.","Soda Italiana","Agua con gas y jarabe."],
+ ["mate-da-casa",20,"Mate da Casa","Chá gelado, limão, xarope de grenadine, água com gás e espuma da casa.","House Iced Tea","Iced mate tea, lime, grenadine syrup, sparkling water and house foam.","Té Helado de la Casa","Té helado, limón, jarabe de granadina, agua con gas y espuma de la casa."]
+ ]}
+]},
+{id:"bebidas", t:["Bebidas","Beverages","Bebidas"], groups:[
+ {t:["Águas e Refrigerantes","Water & Soft Drinks","Aguas y Refrescos"], items:[
+ ["",5,"Água Mineral sem Gás","","Still Mineral Water","","Agua Mineral sin Gas",""],
+ ["",7,"Água Mineral com Gás","","Sparkling Mineral Water","","Agua Mineral con Gas",""],
+ ["",9,"Água Tônica","","Tonic Water","","Agua Tónica",""],
+ ["",9,"Coca-Cola","","Coca-Cola","","Coca-Cola",""],
+ ["",9,"Coca-Cola Zero","","Coca-Cola Zero","","Coca-Cola Zero",""],
+ ["",9,"Citrus","","Citrus Soda","","Citrus",""],
+ ["",9,"Guaraná","","Guaraná Soda","","Guaraná",""],
+ ["",9,"Sprite","","Sprite","","Sprite",""],
+ ["",10,"Del Valle","Consultar sabores.","Del Valle","Ask about flavors.","Del Valle","Consultar sabores."],
+ ["",18,"Red Bull","","Red Bull","","Red Bull",""]
+ ]},
+ {t:["Sucos Naturais","Natural Juices","Jugos Naturales"], items:[
+ ["",13,"Suco Natural","Consultar frutas disponíveis.","Natural Juice","Ask about available fruits.","Jugo Natural","Consultar frutas disponibles."],
+ ["",16,"Suco Misto","2 frutas ou mais.","Mixed Juice","2 or more fruits.","Jugo Mixto","2 frutas o más."],
+ ["",20,"Suco Cremoso","Fruta + leite condensado.","Creamy Juice","Fruit + condensed milk.","Jugo Cremoso","Fruta + leche condensada."]
+ ]},
+ {t:["Cervejas","Beers","Cervezas"], items:[
+ ["","?","Cerveja Long Neck","Corona, Heineken, Budweiser.","Long Neck Beer","Corona, Heineken, Budweiser.","Cerveza Long Neck","Corona, Heineken, Budweiser."],
+ ["","?","Cerveja Latão","Amstel.","Large Beer Can","Amstel.","Cerveza en Lata Grande","Amstel."],
+ ["",12,"Cerveja Malzebier","","Malzebier","","Cerveza Malzebier",""],
+ ["",15,"Ice Smirnoff","","Smirnoff Ice","","Smirnoff Ice",""],
+ ["","?","Cerveja sem Álcool","","Non-Alcoholic Beer","","Cerveza sin Alcohol",""]
+ ]},
+ {t:["Vinho e Espumante","Wine & Sparkling","Vino y Espumante"], items:[
+ ["",20,"Taça de Vinho","Tinto suave.","Glass of Wine","Smooth red.","Copa de Vino","Tinto suave."],
+ ["","?","Vinho (garrafa)","Consultar uvas disponíveis.","Bottle of Wine","Ask about available varietals.","Botella de Vino","Consultar uvas disponibles."],
+ ["","?","Espumante (garrafa)","Brut ou rosé, consultar marcas disponíveis.","Bottle of Sparkling Wine","Brut or rosé, ask about available brands.","Botella de Espumante","Brut o rosé, consultar marcas disponibles."]
+ ]},
+ {t:["Doses","Spirits","Dosis"], items:[
+ ["",15,"Amarula","","Amarula","","Amarula",""],
+ ["",12,"Cachaça Mineira","","Cachaça (Minas Gerais)","","Cachaça Mineira",""],
+ ["",18,"Campari","","Campari","","Campari",""],
+ ["",20,"Gin Tradicional","","Gin","","Gin Tradicional",""],
+ ["",25,"Gin Premium","","Premium Gin","","Gin Premium",""],
+ ["",18,"Rum Bacardi","","Bacardi Rum","","Ron Bacardi",""],
+ ["",15,"Saquê","","Sake","","Sake",""],
+ ["",20,"Tequila Ouro/Prata","","Tequila Gold/Silver","","Tequila Oro/Plata",""],
+ ["",18,"Vodka Smirnoff","","Smirnoff Vodka","","Vodka Smirnoff",""],
+ ["",25,"Vodka Premium","","Premium Vodka","","Vodka Premium",""],
+ ["",25,"Whisky Red Label","","Red Label Whisky","","Whisky Red Label",""],
+ ["",32,"Whisky Black Label","","Black Label Whisky","","Whisky Black Label",""],
+ ["",32,"Whisky Jack Daniel's","","Jack Daniel's Whisky","","Whisky Jack Daniel's",""],
+ ["",35,"Whisky Buchanan's","","Buchanan's Whisky","","Whisky Buchanan's",""]
+ ]}
+]}
+];
+
+const UI = {
+  pt:{ask:"Consultar", back:"Início", close:"Fechar", note:"Preços em reais (R$). Imagens ilustrativas."},
+  en:{ask:"Ask staff", back:"Home", close:"Close", note:"Prices in Brazilian reais (R$). Photos for illustration."},
+  es:{ask:"Consultar", back:"Inicio", close:"Cerrar", note:"Precios en reales (R$). Imágenes ilustrativas."}
+};
+const LI = {pt:0, en:1, es:2};
+let lang = "pt";
+const fmt = p => p === "?" ? UI[lang].ask : "R$ " + p.toFixed(2).replace(".", ",");
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function render(){
+  const i = LI[lang];
+  document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === lang)));
+  document.getElementById("chips").innerHTML = MENU.map(s => `<a href="#${s.id}" data-id="${s.id}">${esc(s.t[i])}</a>`).join("");
+  document.getElementById("menu").innerHTML = MENU.map(s => `
+    <section id="${s.id}"><h2>${esc(s.t[i])}</h2>${s.id === "para2" ? "" : ""}
+    ${s.groups.map(g => `${g.t ? `<h3>${esc(g.t[i])}</h3>` : ""}<div class="list" style="${g.t ? "" : "margin-top:12px"}">
+      ${g.items.map(it => { const n = it[2 + i*2], d = it[3 + i*2]; return `
+      <div class="item"><div class="txt"><div class="row"><span class="name">${esc(n)}</span><span class="price">${fmt(it[1])}</span></div>${d ? `<div class="desc">${esc(d)}</div>` : ""}</div>
+      ${it[0] ? `<button class="ph" data-img="${it[0]}" data-name="${esc(n)}" aria-label="${esc(n)}"><img src="img/${it[0]}.jpg" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>` : ""}</div>`; }).join("")}
+    </div>`).join("")}
+    </section>`).join("") + `<p class="note">${UI[lang].note}</p>`;
+  document.getElementById("lbx").setAttribute("aria-label", UI[lang].close);
+  spy();
+}
+
+function setLang(l){
+  lang = LI[l] !== undefined ? l : "pt";
+  try{ localStorage.setItem("calamares-lang", lang); }catch(e){}
+  const u = new URL(location.href); u.searchParams.set("lang", lang); history.replaceState(null, "", u);
+  render();
+}
+
+function spy(){
+  const chips = [...document.querySelectorAll("#chips a")];
+  let cur = MENU[0].id;
+  for (const s of MENU){ const el = document.getElementById(s.id); if (el && el.getBoundingClientRect().top < 140) cur = s.id; }
+  chips.forEach(c => { const on = c.dataset.id === cur; c.classList.toggle("on", on); if (on && c.dataset.on !== "1") c.scrollIntoView({block:"nearest", inline:"center"}); c.dataset.on = on ? "1" : ""; });
+}
+let ticking = false;
+addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(() => { spy(); ticking = false; }); } }, {passive:true});
+
+const lb = document.getElementById("lb");
+document.getElementById("menu").addEventListener("click", e => {
+  const b = e.target.closest(".ph"); if (!b) return;
+  document.getElementById("lbi").src = "img/" + b.dataset.img + ".jpg";
+  document.getElementById("lbt").textContent = b.dataset.name;
+  lb.hidden = false;
+});
+lb.addEventListener("click", () => { lb.hidden = true; });
+document.addEventListener("keydown", e => { if (e.key === "Escape") lb.hidden = true; });
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.l)));
+
+let start = new URLSearchParams(location.search).get("lang");
+if (!LI.hasOwnProperty(start)){ try{ start = localStorage.getItem("calamares-lang"); }catch(e){ start = null; } }
+if (!LI.hasOwnProperty(start)){ const n = (navigator.language || "pt").slice(0,2).toLowerCase(); start = LI.hasOwnProperty(n) ? n : "pt"; }
+lang = start; render();
+if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
+</script>
+</body>
+</html>
