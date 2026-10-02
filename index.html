@@ -61,6 +61,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);fo
 .menu-langs a small{font-size:12px;color:var(--muted)}
 .menu-langs a:hover,.menu-langs a:focus-visible{border-color:var(--sea);background:var(--sea-soft);outline:none}
 .menu-langs a.primary{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+.fotos-link{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;padding:12px;border-radius:12px;background:var(--sea-soft);color:var(--sea);font-weight:600;font-size:15px;text-decoration:none}
 .menu-langs a.primary small{color:var(--surface);opacity:.85}
 
 /* Actions */
@@ -115,6 +116,7 @@ footer strong{font-family:var(--f-display);font-weight:400;color:var(--ink);font
       <a id="m-en" data-link="menu_en" href="#"><b>EN</b><small>English</small></a>
       <a id="m-es" data-link="menu_es" href="#"><b>ES</b><small>Español</small></a>
     </div>
+    <a class="fotos-link" data-link="fotos" href="#"><span data-t="fotos">Fotos dos pratos e drinks</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></a>
   </section>
 
   <section>
@@ -155,22 +157,23 @@ const LINKS = {
   menu_pt:   "cardapio.html?lang=pt",   // cardápio em português (PDF ou página)
   menu_en:   "cardapio.html?lang=en",   // cardápio em inglês
   menu_es:   "cardapio.html?lang=es",   // cardápio em espanhol
-  review:    "",   // link de avaliação do TripAdvisor
-  instagram: "",   // ex.: https://instagram.com/seuperfil
+  review:    "https://www.tripadvisor.com.br/UserReviewEdit-g1056623-d6004322-Point_Calamares-Arraial_do_Cabo_State_of_Rio_de_Janeiro.html",   // link de avaliação do TripAdvisor
+  instagram: "https://www.instagram.com/pointcalamares/",   // ex.: https://instagram.com/seuperfil
   whatsapp:  "",   // ex.: https://wa.me/5522999999999?text=Olá!
+  fotos:     "fotos.html",
   maps:      "https://www.google.com/maps/search/?api=1&query=Calamares+Arraial+do+Cabo+RJ"
 };
 
 const T = {
   pt:{tagline:"Frutos do mar em Arraial do Cabo, RJ",menu:"Cardápio",menuSub:"Escolha o idioma",more:"Mais do Calamares",
-      review:"Avaliar o restaurante",reviewSub:"Conte como foi no TripAdvisor",igSub:"Fotos, pratos e novidades",
-      waSub:"Reservas e informações",maps:"Como chegar",mapsSub:"Abrir rota no mapa",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link disponível em breve"},
+      review:"Avaliar o restaurante",reviewSub:"Conte como foi no Tripadvisor",igSub:"Fotos, pratos e novidades",
+      waSub:"Reservas e informações",maps:"Como chegar",mapsSub:"Abrir rota no mapa",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link disponível em breve",fotos:"Fotos dos pratos e drinks"},
   en:{tagline:"Seafood in Arraial do Cabo, Brazil",menu:"Menu",menuSub:"Choose your language",more:"More from Calamares",
       review:"Review us",reviewSub:"Share your visit on TripAdvisor",igSub:"Photos, dishes and news",
-      waSub:"Bookings and information",maps:"Directions",mapsSub:"Open route in maps",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link coming soon"},
+      waSub:"Bookings and information",maps:"Directions",mapsSub:"Open route in maps",foot:"Arraial do Cabo · Rio de Janeiro",soon:"Link coming soon",fotos:"Dish & drink photos"},
   es:{tagline:"Mariscos en Arraial do Cabo, Brasil",menu:"Menú",menuSub:"Elige el idioma",more:"Más de Calamares",
       review:"Evalúa el restaurante",reviewSub:"Cuéntanos en TripAdvisor",igSub:"Fotos, platos y novedades",
-      waSub:"Reservas e información",maps:"Cómo llegar",mapsSub:"Abrir ruta en el mapa",foot:"Arraial do Cabo · Río de Janeiro",soon:"Enlace disponible pronto"}
+      waSub:"Reservas e información",maps:"Cómo llegar",mapsSub:"Abrir ruta en el mapa",foot:"Arraial do Cabo · Río de Janeiro",soon:"Enlace disponible pronto",fotos:"Fotos de platos y tragos"}
 };
 
 let lang = "pt";
